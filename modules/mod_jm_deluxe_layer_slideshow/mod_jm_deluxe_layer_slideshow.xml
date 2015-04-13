@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.6.0" type="module" client="site" method="upgrade">
+   <name>JM Deluxe Layer Slideshow</name>
+    <creationDate>2014-06-26</creationDate>
+    <copyright>Copyright (C) 2013 - joomlaman.com</copyright>
+    <license>http://www.gnu.org/copyleft/lgpl.html</license>
+    <author>JoomlaMan</author>
+    <authorEmail>support@joomlaman.com</authorEmail>
+    <authorUrl>http://joomlaman.com</authorUrl>
+    <version>1.3.2</version>
+   <description>JM Deluxe Layer Slideshow Module</description>
+	<files>
+		<filename module="mod_jm_deluxe_layer_slideshow">mod_jm_deluxe_layer_slideshow.php</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+		<folder>tmpl</folder>
+		<folder>admin</folder>
+		<folder>language</folder>
+	</files>
+  <languages folder="language">
+    <!-- Any language files included with the module -->
+        <language tag="en-GB">en-GB/en-GB.mod_jm_deluxe_layer_slideshow.ini</language>
+        <language tag="en-GB">en-GB/en-GB.mod_jm_deluxe_layer_slideshow.sys.ini</language>
+    </languages>
+	<config>
+                    <fields name="params" addfieldpath="/modules/mod_jm_deluxe_layer_slideshow/admin/elements">
+                        <fieldset name="basic">
+                            <field type="asset" name="asset" path="modules/mod_jm_deluxe_layer_slideshow/admin/assets/"></field>
+                            <field name="moduleclass_sfx" type="text" class="jm-field" label="Module Class Suffix" description="Module Class Suffix" />
+                            <field name="layer_id" type="sql"  class="jm-field single" default="1" label="Slider" description="Slider" query="SELECT id, title FROM #__jmparallax_slideshow_sliders WHERE state=1" key_field="id" value_field="title"/>
+			</fieldset>
+			<fieldset name="advanced">
+                             <field name="include_jquery" type="list" class="jm-field single" default="0" label="Include jQuery?" description="Include jQuery?">
+                                <option value="0">JNO</option>
+                                <option value="1">JYES</option>
+                              </field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

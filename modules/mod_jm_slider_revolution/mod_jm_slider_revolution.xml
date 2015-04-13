@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.6.0" type="module" client="site" method="upgrade">
+   <name>JM Slider Revolution</name>
+    <creationDate>2014-10-15</creationDate>
+    <copyright>Copyright (C) 2014 - joomlaman.com</copyright>
+    <license>http://www.gnu.org/copyleft/lgpl.html</license>
+    <author>JoomlaMan</author>
+    <authorEmail>support@joomlaman.com</authorEmail>
+    <authorUrl>http://joomlaman.com</authorUrl>
+    <version>1.0.0</version>
+   <description>JM Slider Revolution Module</description>
+	<files>
+		<filename module="mod_jm_slider_revolution">mod_jm_slider_revolution.php</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+		<folder>tmpl</folder>
+		<folder>language</folder>
+	</files>
+  <languages folder="language">
+    <!-- Any language files included with the module -->
+        <language tag="en-GB">en-GB/en-GB.mod_jm_slider_revolution.ini</language>
+        <language tag="en-GB">en-GB/en-GB.mod_jm_slider_revolution.sys.ini</language>
+    </languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="moduleclass_sfx" type="text" class="jm-field" label="Module Class Suffix" description="Module Class Suffix" />
+				<field name="slider_id" type="sql"  class="jm-field single" label="Slider" description="Slider" query="SELECT id, title FROM #__revslider_sliders" key_field="id" value_field="title"/>
+			</fieldset>
+			<fieldset name="advanced">
+				 <field name="include_jquery" type="list" class="jm-field single" default="0" label="Include jQuery?" description="Include jQuery?">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				  </field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

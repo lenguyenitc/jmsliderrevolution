@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5" method="upgrade">
+    <name>com_jm_deluxe_layer_slideshow</name>
+    <creationDate>2014-08-06</creationDate>
+    <copyright>Copyright (C) 2013 - joomlaman.com</copyright>
+    <license>http://www.gnu.org/copyleft/lgpl.html</license>
+    <author>JoomlaMan</author>
+    <authorEmail>support@joomlaman.com</authorEmail>
+    <authorUrl>http://joomlaman.com</authorUrl>
+    <version>1.3.3</version>
+    <description>Deluxe Layer Slideshow Component for Joomla</description>
+    <scriptfile>script.jm_deluxe_layer_slideshow.php</scriptfile>
+    <install> <!-- Runs on install -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+    <uninstall> <!-- Runs on uninstall -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+    <administration>
+        <menu img="components/com_jm_deluxe_layer_slideshow/assets/images/s_com_jmparallax_slideshow.png" >COM_JM_DELUXE_LAYER_SLIDESHOW</menu>
+        <submenu>  
+			<menu link="option=com_jm_deluxe_layer_slideshow&amp;view=slideshowsliders" view="slideshowsliders" img="components/com_jm_deluxe_layer_slideshow/assets/images/s_slideshowsliders.png" alt="Jmparallax_slideshow/Slideshowsliders">COM_JM_DELUXE_LAYER_SLIDESHOW_TITLE_SLIDESHOWSLIDERS</menu>
+        </submenu>
+        <files folder="administrator">
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
+            <filename>controller.php</filename>
+            <filename>index.html</filename>
+            <filename>jm_deluxe_layer_slideshow.php</filename>
+            <folder>controllers</folder>
+            <folder>assets</folder>
+            <folder>data</folder>
+            <folder>helpers</folder>
+            <folder>classes</folder>
+            <folder>models</folder>
+            <folder>sql</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
+        </files>
+        <languages folder="administrator">
+			<language tag="en-GB">language/en-GB.com_jm_deluxe_layer_slideshow.ini</language>
+			<language tag="en-GB">language/en-GB.com_jm_deluxe_layer_slideshow.sys.ini</language>
+        </languages>
+    </administration>
+	<modules>
+		<module module="mod_jm_deluxe_layer_slideshow" client="site" />
+	</modules>
+	<plugins>
+		<plugin plugin="plg_jmshortcode" group="content" />
+	</plugins>
+</extension>
+<!-- Component built by the Joomla Component Creator -->
+<!-- http://www.notwebdesign.com/joomla-component-creator/ -->

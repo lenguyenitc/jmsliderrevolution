@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5" method="upgrade">
+    <name>com_jm_slider_revolution</name>
+    <creationDate>2014-11-01</creationDate>
+    <copyright>Copyright (C) 2014. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <author>JoomlaMan</author>
+    <authorEmail>support@joomlaman.com</authorEmail>
+    <authorUrl>http://JoomlaMan.com</authorUrl>
+    <version>1.0.0</version>
+    <description>Jm Slider Revolution Joomla CMS</description>
+	<scriptfile>script.jm_slider_revolution.php</scriptfile>
+    <install> <!-- Runs on install -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+    <uninstall> <!-- Runs on uninstall -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+    <administration>
+        <menu img="components/com_jm_slider_revolution/assets/images/s_com_jm_slider_revolution.png" >COM_JM_SLIDER_REVOLUTION</menu>
+        <files folder="administrator">
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
+            <filename>release_log.html</filename>
+            <filename>controller.php</filename>
+            <filename>index.html</filename>
+            <filename>jm_slider_revolution.php</filename>
+            <folder>controllers</folder>
+            <folder>assets</folder>
+            <folder>classes</folder>
+            <folder>rs-plugin</folder>
+            <folder>settings</folder>
+            <folder>helpers</folder>
+            <folder>models</folder>
+            <folder>sql</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
+            <folder>language</folder>
+        </files>
+        <languages folder="administrator">            
+			<language tag="en-GB">language/en-GB/en-GB.com_jm_slider_revolution.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_jm_slider_revolution.sys.ini</language>
+        </languages>
+    </administration>	
+	<modules>
+		<module module="mod_jm_slider_revolution" client="site" />
+	</modules>
+    <plugins>
+        <plugin group="content" plugin="plg_jm_slider_revolution"/>
+    </plugins>    
+</extension>
