@@ -46,7 +46,10 @@ $sliderMainSettings->addRadio("full_screen_align_force", array("on"=>"On", "off"
 
 
 $sliderMainSettings->addRadio("auto_height", array("on"=>"On", "off"=>"Off"),"Unlimited Height","off");
-$sliderMainSettings->addRadio("force_full_width", array("on"=>"On", "off"=>"Off"),"Force Full Width","off");
+$sliderMainSettings->addRadio("force_full_width", array("on"=>"On", "off"=>"Off"),"Force Full Width","off");				
+$arrParams = array("description"=>"");
+$sliderMainSettings->addTextBox("min_height", "0","Min. Height", $arrParams);
+$sliderMainSettings->addControl("slider_type", "min_height", UniteSettingsRev::CONTROL_TYPE_HIDE, "fullscreen");
 
 $paramsSize = array("width"=>960,"height"=>350,"datatype"=>UniteSettingsRev::DATATYPE_NUMBER);
 $sliderMainSettings->addCustom("slider_size", "slider_size","","Grid Settings",$paramsSize);
