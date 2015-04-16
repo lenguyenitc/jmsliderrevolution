@@ -239,7 +239,6 @@
 		</field>
 		<field name="swipe_velocity" type="text" label="Swipe Velocity (0 - 1)" default="0.7" datatype="number" description="Defines the sensibility of gestures. Smaller values mean a higher sensibility" />
 		<field name="swipe_min_touches" type="text" label="Swipe Min Touches" default="1" datatype="number" description="Defines how many fingers are needed minimum for swiping" />
-		<field name="swipe_max_touches" type="text" label="Swipe Max Touches" default="1" datatype="number" description="Defines how many fingers are allowed for swiping at the same time" />
 		<field name="drag_block_vertical" type="radio" default="false" label="Drag Block Vertical" description="Prevent vertical scroll during swipe">
 			<option value="true" text="On" />
 			<option value="false" text="Off" />

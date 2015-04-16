@@ -79,9 +79,9 @@ $api =  "revapi".$sliderID;
 							
 					<?php echo $api?>.bind("revolution.slide.onchange",function (e,data) {
 						//alert("slide changed to: "+data.slideIndex);
-						//data.slideIndex <?php _e('is the index of the li container in this Slider', REVSLIDER_TEXTDOMAIN); ?>
+						//data.slideIndex <?php echo 'is the index of the li container in this Slider'; ?>
 						
-						//data.slide <?php _e('is the current slide jQuery object (the li element)', REVSLIDER_TEXTDOMAIN); ?>
+						//data.slide <?php echo 'is the current slide jQuery object (the li element)'; ?>
 						
 					});
 
