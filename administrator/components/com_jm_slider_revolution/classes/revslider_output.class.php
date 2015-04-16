@@ -1382,6 +1382,8 @@ class RevSliderOutput{
 		$hideThumbsUnderResolution = $this->slider->getParam("hide_thumbs_under_resolution","0",RevSlider::VALIDATE_NUMERIC);
 
 		$timerBar =  $this->slider->getParam("show_timerbar","top");
+		
+		$disableKenBurnOnMobile =  $this->slider->getParam("disable_kenburns_on_mobile","off");
 
 		$swipe_velocity = $this->slider->getParam("swipe_velocity","0.7",RevSlider::VALIDATE_NUMERIC);
 		$swipe_min_touches = $this->slider->getParam("swipe_min_touches","1",RevSlider::VALIDATE_NUMERIC);
@@ -1409,9 +1411,10 @@ class RevSliderOutput{
 
 		$operations = new RevOperations();
 		$arrValues = $operations->getGeneralSettingsValues();
-
+		$do_delay = $this->slider->getParam("start_js_after_delay","0");		
+		$do_delay = intval($do_delay);
 		$js_to_footer = (isset($arrValues['js_to_footer']) && $arrValues['js_to_footer'] == 'on') ? true : false;
-
+		
 		//add inline style into the footer
 		if($js_to_footer && $this->previewMode == false){
 			ob_start();
@@ -1420,214 +1423,178 @@ class RevSliderOutput{
 		?>
 
 		<script type="text/javascript">
+				/******************************************
+					-	PREPARE PLACEHOLDER FOR SLIDER	-
+				******************************************/
+				var setREVStartSize = function() {
+					var	tpopt = new Object();
+						tpopt.startwidth = <?php echo $this->slider->getParam("width","900")?>;
+						tpopt.startheight = <?php echo $this->slider->getParam("height","300")?>;
+						tpopt.container = jQuery('#<?php echo $this->sliderHtmlID?>');
+						tpopt.fullScreen = "<?php echo $optFullScreen?>";
+						tpopt.forceFullWidth="<?php echo $this->slider->getParam("force_full_width", 'off'); ?>";
 
-			/******************************************
-				-	PREPARE PLACEHOLDER FOR SLIDER	-
-			******************************************/
-			<?php
-						/*var setREVStartSize = function() {
+					tpopt.container.closest(".rev_slider_wrapper").css({height:tpopt.container.height()});tpopt.width=parseInt(tpopt.container.width(),0);tpopt.height=parseInt(tpopt.container.height(),0);tpopt.bw=tpopt.width/tpopt.startwidth;tpopt.bh=tpopt.height/tpopt.startheight;if(tpopt.bh>tpopt.bw)tpopt.bh=tpopt.bw;if(tpopt.bh<tpopt.bw)tpopt.bw=tpopt.bh;if(tpopt.bw<tpopt.bh)tpopt.bh=tpopt.bw;if(tpopt.bh>1){tpopt.bw=1;tpopt.bh=1}if(tpopt.bw>1){tpopt.bw=1;tpopt.bh=1}tpopt.height=Math.round(tpopt.startheight*(tpopt.width/tpopt.startwidth));if(tpopt.height>tpopt.startheight&&tpopt.autoHeight!="on")tpopt.height=tpopt.startheight;if(tpopt.fullScreen=="on"){tpopt.height=tpopt.bw*tpopt.startheight;var cow=tpopt.container.parent().width();var coh=jQuery(window).height();if(tpopt.fullScreenOffsetContainer!=undefined){try{var offcontainers=tpopt.fullScreenOffsetContainer.split(",");jQuery.each(offcontainers,function(e,t){coh=coh-jQuery(t).outerHeight(true);if(coh<tpopt.minFullScreenHeight)coh=tpopt.minFullScreenHeight})}catch(e){}}tpopt.container.parent().height(coh);tpopt.container.height(coh);tpopt.container.closest(".rev_slider_wrapper").height(coh);tpopt.container.closest(".forcefullwidth_wrapper_tp_banner").find(".tp-fullwidth-forcer").height(coh);tpopt.container.css({height:"100%"});tpopt.height=coh;}else{tpopt.container.height(tpopt.height);tpopt.container.closest(".rev_slider_wrapper").height(tpopt.height);tpopt.container.closest(".forcefullwidth_wrapper_tp_banner").find(".tp-fullwidth-forcer").height(tpopt.height);}
+				};
 
-						var	tpopt = new Object();
-							tpopt.startwidth = <?php echo $this->slider->getParam("width","900")?>;
-							tpopt.startheight = <?php echo $this->slider->getParam("height","300")?>;
-							tpopt.container = jQuery('#<?php echo $this->sliderHtmlID?>');
-							tpopt.fullScreen = "<?php echo $optFullScreen?>";
-							tpopt.forceFullWidth="<?php echo $this->slider->getParam("force_full_width", 'off'); ?>";
-
-
-
-
-						tpopt.container.closest('.rev_slider_wrapper').css({'height':tpopt.container.height()});
-
-						tpopt.width=parseInt(tpopt.container.width(),0);
-						tpopt.height=parseInt(tpopt.container.height(),0);
+				/* CALL PLACEHOLDER */
+				setREVStartSize();
 
 
-						tpopt.bw= (tpopt.width / tpopt.startwidth);
-						tpopt.bh = (tpopt.height / tpopt.startheight);
+				var tpj=jQuery;
+				<?php if($noConflict == "on"):?>tpj.noConflict();<?php endif;?>
 
-						if (tpopt.bh>tpopt.bw) tpopt.bh=tpopt.bw;
-						if (tpopt.bh<tpopt.bw) tpopt.bw = tpopt.bh;
-						if (tpopt.bw<tpopt.bh) tpopt.bh = tpopt.bw;
-						if (tpopt.bh>1) { tpopt.bw=1; tpopt.bh=1; }
-						if (tpopt.bw>1) {tpopt.bw=1; tpopt.bh=1; }
-						tpopt.height = Math.round(tpopt.startheight * (tpopt.width/tpopt.startwidth));
-						if (tpopt.height>tpopt.startheight && tpopt.autoHeight!="on") tpopt.height=tpopt.startheight;
+				var revapi<?php echo $sliderID?>;
 
+				tpj(document).ready(function() {
 
+				if(tpj('#<?php echo $this->sliderHtmlID?>').revolution == undefined){
+					revslider_showDoubleJqueryError('#<?php echo $this->sliderHtmlID?>');
+				}else{
+				   revapi<?php echo $sliderID?> = tpj('#<?php echo $this->sliderHtmlID?>').show().revolution(
+					{	
+						<?php if($do_delay > 0){ ?>startDelay: <?php echo $do_delay; ?>,<?php } ?>
+						dottedOverlay:"<?php echo $this->slider->getParam("background_dotted_overlay","none");?>",
+						delay:<?php echo $this->slider->getParam("delay","9000",RevSlider::FORCE_NUMERIC)?>,
+						startwidth:<?php echo $this->slider->getParam("width","900")?>,
+						startheight:<?php echo $this->slider->getParam("height","300")?>,
+						hideThumbs:<?php echo $hideThumbs?>,
 
-
-						if (tpopt.fullScreen=="on") {
-								tpopt.height = tpopt.bw * tpopt.startheight;
-								var cow = tpopt.container.parent().width();
-								var coh = jQuery(window).height();
-								if (tpopt.fullScreenOffsetContainer!=undefined) {
-									try{
-										var offcontainers = tpopt.fullScreenOffsetContainer.split(",");
-										jQuery.each(offcontainers,function(index,searchedcont) {
-											coh = coh - jQuery(searchedcont).outerHeight(true);
-											if (coh<tpopt.minFullScreenHeight) coh=tpopt.minFullScreenHeight;
-										});
-									} catch(e) {}
-								}
-
-								tpopt.container.parent().height(coh);
-								tpopt.container.height(coh);
-								tpopt.container.closest('.rev_slider_wrapper').height(coh);
-								tpopt.container.closest('.forcefullwidth_wrapper_tp_banner').find('.tp-fullwidth-forcer').height(coh);
-								tpopt.container.css({'height':'100%'});
-
-								tpopt.height=coh;
-
-						} else {
-							tpopt.container.height(tpopt.height);
-							tpopt.container.closest('.rev_slider_wrapper').height(tpopt.height);
-							tpopt.container.closest('.forcefullwidth_wrapper_tp_banner').find('.tp-fullwidth-forcer').height(tpopt.height);
+						thumbWidth:<?php echo $this->slider->getParam("thumb_width","100",RevSlider::FORCE_NUMERIC)?>,
+						thumbHeight:<?php echo $this->slider->getParam("thumb_height","50",RevSlider::FORCE_NUMERIC)?>,
+						thumbAmount:<?php echo $thumbAmount?>,
+						
+						<?php
+						if($this->slider->getParam("slider_type") != "fullscreen"){
+							$minHeight = $this->slider->getParam("min_height","0",RevSlider::FORCE_NUMERIC);
+							if($minHeight > 0){ ?>minHeight:<?php echo $minHeight; ?>,
+								<?php
+							}
 						}
+						?>
+						
+						simplifyAll:"<?php echo $this->slider->getParam("simplify_ie8_ios4","off"); ?>",
 
-					}				*/
-			?>
+						navigationType:"<?php echo $this->slider->getParam("navigaion_type","none")?>",
+						navigationArrows:"<?php echo $arrowsType?>",
+						navigationStyle:"<?php echo $this->slider->getParam("navigation_style","round")?>",
+
+						touchenabled:"<?php echo $this->slider->getParam("touchenabled","on")?>",
+						onHoverStop:"<?php echo $this->slider->getParam("stop_on_hover","on")?>",
+						nextSlideOnWindowFocus:"<?php echo $this->slider->getParam("next_slide_on_window_focus","off")?>",
+
+						<?php
+						if($this->slider->getParam("touchenabled","on") == 'on'){
+						?>swipe_threshold: <?php echo $swipe_velocity ?>,
+						swipe_min_touches: <?php echo $swipe_min_touches ?>,
+						drag_block_vertical: <?php echo ($drag_block_vertical == 'true') ? 'true' : 'false'; ?>,
+						<?php
+						}
+						?>
+
+						<?php
+						if($use_parallax == 'on'){
+						?>
+						parallax:"<?php echo $parallax_type; ?>",
+						parallaxBgFreeze:"<?php echo $parallax_bg_freeze; ?>",
+						parallaxLevels:[<?php echo $parallax_level; ?>],
+						<?php
+						if($disable_parallax_mobile == 'on'){
+						?>
+						parallaxDisableOnMobile:"on",
+						<?php
+						}
+						}
+						?>
+						
+						<?php
+						if($disableKenBurnOnMobile == 'on'){
+							?>
+							panZoomDisableOnMobile:"on",
+							<?php
+						}
+						?>
+						
+						keyboardNavigation:"<?php echo $this->slider->getParam("keyboard_navigation","off")?>",
+
+						navigationHAlign:"<?php echo $this->slider->getParam("navigaion_align_hor","center")?>",
+						navigationVAlign:"<?php echo $this->slider->getParam("navigaion_align_vert","bottom")?>",
+						navigationHOffset:<?php echo $this->slider->getParam("navigaion_offset_hor","0",RevSlider::FORCE_NUMERIC)?>,
+						navigationVOffset:<?php echo $this->slider->getParam("navigaion_offset_vert","20",RevSlider::FORCE_NUMERIC)?>,
+
+						soloArrowLeftHalign:"<?php echo $this->slider->getParam("leftarrow_align_hor","left")?>",
+						soloArrowLeftValign:"<?php echo $this->slider->getParam("leftarrow_align_vert","center")?>",
+						soloArrowLeftHOffset:<?php echo $this->slider->getParam("leftarrow_offset_hor","20",RevSlider::FORCE_NUMERIC)?>,
+						soloArrowLeftVOffset:<?php echo $this->slider->getParam("leftarrow_offset_vert","0",RevSlider::FORCE_NUMERIC)?>,
+
+						soloArrowRightHalign:"<?php echo $this->slider->getParam("rightarrow_align_hor","right")?>",
+						soloArrowRightValign:"<?php echo $this->slider->getParam("rightarrow_align_vert","center")?>",
+						soloArrowRightHOffset:<?php echo $this->slider->getParam("rightarrow_offset_hor","20",RevSlider::FORCE_NUMERIC)?>,
+						soloArrowRightVOffset:<?php echo $this->slider->getParam("rightarrow_offset_vert","0",RevSlider::FORCE_NUMERIC)?>,
+
+						shadow:<?php echo $this->slider->getParam("shadow_type","2")?>,
+						fullWidth:"<?php echo $optFullWidth?>",
+						fullScreen:"<?php echo $optFullScreen?>",
+
+						<?php 
+						if($use_spinner == '-1'){
+						?>
+						spinner:"off",
+						<?php
+						}else{
+						?>
+						spinner:"spinner<?php echo $use_spinner?>",
+						<?php
+						}
+						?>
+						
+						stopLoop:"<?php echo $stopSlider?>",
+						stopAfterLoops:<?php echo $stopAfterLoops?>,
+						stopAtSlide:<?php echo $stopAtSlide?>,
+
+						shuffle:"<?php echo $this->slider->getParam("shuffle","off") ?>",
+
+						<?php if($this->slider->getParam("slider_type") == "fullwidth"){ ?>autoHeight:"<?php echo $this->slider->getParam("auto_height", 'off'); ?>",<?php }  ?>
+
+						<?php if($this->slider->getParam("slider_type") == "fullwidth" || $this->slider->getParam("slider_type") == "fullscreen"){ ?>forceFullWidth:"<?php echo $this->slider->getParam("force_full_width", 'off'); ?>",<?php }  ?>
+
+						<?php if($this->slider->getParam("slider_type") == "fullscreen"){ ?>fullScreenAlignForce:"<?php echo $this->slider->getParam("full_screen_align_force","off") ?>",<?php }  ?>
+
+						<?php if($this->slider->getParam("slider_type") == "fullscreen"){ ?>minFullScreenHeight:"<?php echo $this->slider->getParam("fullscreen_min_height","0") ?>",<?php }  ?>
+
+						<?php if($timerBar == "hide"){ ?>hideTimerBar:"on",<?php } ?>
+
+						hideThumbsOnMobile:"<?php echo $hideThumbsOnMobile?>",
+						<?php if($hideThumbsOnMobile == 'off'){ ?>hideNavDelayOnMobile:<?php echo $hideThumbsDelayMobile; ?>,
+						<?php } ?>hideBulletsOnMobile:"<?php echo $hideBulletsOnMobile?>",
+						hideArrowsOnMobile:"<?php echo $hideArrowsOnMobile?>",
+						hideThumbsUnderResolution:<?php echo $hideThumbsUnderResolution?>,
+
+						<?php
+						if($this->slider->getParam("slider_type") == 'fullscreen'){
+						?>
+						fullScreenOffsetContainer: "<?php echo $this->slider->getParam("fullscreen_offset_container","");?>",
+						fullScreenOffset: "<?php echo $this->slider->getParam("fullscreen_offset_size","");?>",
+						<?php
+						}
+						?>
+						hideSliderAtLimit:<?php echo $hideSliderAtLimit?>,
+						hideCaptionAtLimit:<?php echo $hideCaptionAtLimit?>,
+						hideAllCaptionAtLilmit:<?php echo $hideAllCaptionAtLimit?>,
+						startWithSlide:<?php echo $startWithSlide?>
+					});
 
 
-			var setREVStartSize = function() {
-				var	tpopt = new Object();
-					tpopt.startwidth = <?php echo $this->slider->getParam("width","900")?>;
-					tpopt.startheight = <?php echo $this->slider->getParam("height","300")?>;
-					tpopt.container = jQuery('#<?php echo $this->sliderHtmlID?>');
-					tpopt.fullScreen = "<?php echo $optFullScreen?>";
-					tpopt.forceFullWidth="<?php echo $this->slider->getParam("force_full_width", 'off'); ?>";
-
-				tpopt.container.closest(".rev_slider_wrapper").css({height:tpopt.container.height()});tpopt.width=parseInt(tpopt.container.width(),0);tpopt.height=parseInt(tpopt.container.height(),0);tpopt.bw=tpopt.width/tpopt.startwidth;tpopt.bh=tpopt.height/tpopt.startheight;if(tpopt.bh>tpopt.bw)tpopt.bh=tpopt.bw;if(tpopt.bh<tpopt.bw)tpopt.bw=tpopt.bh;if(tpopt.bw<tpopt.bh)tpopt.bh=tpopt.bw;if(tpopt.bh>1){tpopt.bw=1;tpopt.bh=1}if(tpopt.bw>1){tpopt.bw=1;tpopt.bh=1}tpopt.height=Math.round(tpopt.startheight*(tpopt.width/tpopt.startwidth));if(tpopt.height>tpopt.startheight&&tpopt.autoHeight!="on")tpopt.height=tpopt.startheight;if(tpopt.fullScreen=="on"){tpopt.height=tpopt.bw*tpopt.startheight;var cow=tpopt.container.parent().width();var coh=jQuery(window).height();if(tpopt.fullScreenOffsetContainer!=undefined){try{var offcontainers=tpopt.fullScreenOffsetContainer.split(",");jQuery.each(offcontainers,function(e,t){coh=coh-jQuery(t).outerHeight(true);if(coh<tpopt.minFullScreenHeight)coh=tpopt.minFullScreenHeight})}catch(e){}}tpopt.container.parent().height(coh);tpopt.container.height(coh);tpopt.container.closest(".rev_slider_wrapper").height(coh);tpopt.container.closest(".forcefullwidth_wrapper_tp_banner").find(".tp-fullwidth-forcer").height(coh);tpopt.container.css({height:"100%"});tpopt.height=coh;}else{tpopt.container.height(tpopt.height);tpopt.container.closest(".rev_slider_wrapper").height(tpopt.height);tpopt.container.closest(".forcefullwidth_wrapper_tp_banner").find(".tp-fullwidth-forcer").height(tpopt.height);}
-			};
-
-			/* CALL PLACEHOLDER */
-			setREVStartSize();
-
-
-			var tpj=jQuery;
-			<?php if($noConflict == "on"):?>tpj.noConflict();<?php endif;?>
-
-			var revapi<?php echo $sliderID?>;
-
-			tpj(document).ready(function() {
-
-			if(tpj('#<?php echo $this->sliderHtmlID?>').revolution == undefined)
-				revslider_showDoubleJqueryError('#<?php echo $this->sliderHtmlID?>');
-			else
-			   revapi<?php echo $sliderID?> = tpj('#<?php echo $this->sliderHtmlID?>').show().revolution(
-				{
-					dottedOverlay:"<?php echo $this->slider->getParam("background_dotted_overlay","none");?>",
-					delay:<?php echo $this->slider->getParam("delay","9000",RevSlider::FORCE_NUMERIC)?>,
-					startwidth:<?php echo $this->slider->getParam("width","900")?>,
-					startheight:<?php echo $this->slider->getParam("height","300")?>,
-					hideThumbs:<?php echo $hideThumbs?>,
-
-					thumbWidth:<?php echo $this->slider->getParam("thumb_width","100",RevSlider::FORCE_NUMERIC)?>,
-					thumbHeight:<?php echo $this->slider->getParam("thumb_height","50",RevSlider::FORCE_NUMERIC)?>,
-					thumbAmount:<?php echo $thumbAmount?>,
-
-					navigationType:"<?php echo $this->slider->getParam("navigaion_type","none")?>",
-					navigationArrows:"<?php echo $arrowsType?>",
-					navigationStyle:"<?php echo $this->slider->getParam("navigation_style","round")?>",
-
-					touchenabled:"<?php echo $this->slider->getParam("touchenabled","on")?>",
-					onHoverStop:"<?php echo $this->slider->getParam("stop_on_hover","on")?>",
 
 					<?php
-					if($this->slider->getParam("touchenabled","on") == 'on'){
-					?>swipe_velocity: <?php echo $swipe_velocity ?>,
-					swipe_min_touches: <?php echo $swipe_min_touches ?>,
-					swipe_max_touches: <?php echo $swipe_max_touches ?>,
-					drag_block_vertical: <?php echo ($drag_block_vertical == 'true') ? 'true' : 'false'; ?>,
-					<?php
+					if($this->slider->getParam("custom_javascript", '') !== ''){
+						echo stripslashes($this->slider->getParam("custom_javascript", ''));
 					}
 					?>
-
-					<?php
-					if($use_parallax == 'on'){
-					?>
-					parallax:"<?php echo $parallax_type; ?>",
-					parallaxBgFreeze:"<?php echo $parallax_bg_freeze; ?>",
-					parallaxLevels:[<?php echo $parallax_level; ?>],
-					<?php
-					if($disable_parallax_mobile == 'on'){
-					?>
-					parallaxDisableOnMobile:"on",
-					<?php
-					}
-					}
-					?>
-
-					keyboardNavigation:"<?php echo $this->slider->getParam("keyboard_navigation","off")?>",
-
-					navigationHAlign:"<?php echo $this->slider->getParam("navigaion_align_hor","center")?>",
-					navigationVAlign:"<?php echo $this->slider->getParam("navigaion_align_vert","bottom")?>",
-					navigationHOffset:<?php echo $this->slider->getParam("navigaion_offset_hor","0",RevSlider::FORCE_NUMERIC)?>,
-					navigationVOffset:<?php echo $this->slider->getParam("navigaion_offset_vert","20",RevSlider::FORCE_NUMERIC)?>,
-
-					soloArrowLeftHalign:"<?php echo $this->slider->getParam("leftarrow_align_hor","left")?>",
-					soloArrowLeftValign:"<?php echo $this->slider->getParam("leftarrow_align_vert","center")?>",
-					soloArrowLeftHOffset:<?php echo $this->slider->getParam("leftarrow_offset_hor","20",RevSlider::FORCE_NUMERIC)?>,
-					soloArrowLeftVOffset:<?php echo $this->slider->getParam("leftarrow_offset_vert","0",RevSlider::FORCE_NUMERIC)?>,
-
-					soloArrowRightHalign:"<?php echo $this->slider->getParam("rightarrow_align_hor","right")?>",
-					soloArrowRightValign:"<?php echo $this->slider->getParam("rightarrow_align_vert","center")?>",
-					soloArrowRightHOffset:<?php echo $this->slider->getParam("rightarrow_offset_hor","20",RevSlider::FORCE_NUMERIC)?>,
-					soloArrowRightVOffset:<?php echo $this->slider->getParam("rightarrow_offset_vert","0",RevSlider::FORCE_NUMERIC)?>,
-
-					shadow:<?php echo $this->slider->getParam("shadow_type","2")?>,
-					fullWidth:"<?php echo $optFullWidth?>",
-					fullScreen:"<?php echo $optFullScreen?>",
-
-					spinner:"spinner<?php echo $use_spinner?>",
-
-					stopLoop:"<?php echo $stopSlider?>",
-					stopAfterLoops:<?php echo $stopAfterLoops?>,
-					stopAtSlide:<?php echo $stopAtSlide?>,
-
-					shuffle:"<?php echo $this->slider->getParam("shuffle","off") ?>",
-
-					<?php if($this->slider->getParam("slider_type") == "fullwidth"){ ?>autoHeight:"<?php echo $this->slider->getParam("auto_height", 'off'); ?>",<?php }  ?>
-
-					<?php if($this->slider->getParam("slider_type") == "fullwidth" || $this->slider->getParam("slider_type") == "fullscreen"){ ?>forceFullWidth:"<?php echo $this->slider->getParam("force_full_width", 'off'); ?>",<?php }  ?>
-
-					<?php if($this->slider->getParam("slider_type") == "fullscreen"){ ?>fullScreenAlignForce:"<?php echo $this->slider->getParam("full_screen_align_force","off") ?>",<?php }  ?>
-
-					<?php if($this->slider->getParam("slider_type") == "fullscreen"){ ?>minFullScreenHeight:"<?php echo $this->slider->getParam("fullscreen_min_height","0") ?>",<?php }  ?>
-
-					<?php if($timerBar == "hide"){ ?>hideTimerBar:"on",<?php } ?>
-
-					hideThumbsOnMobile:"<?php echo $hideThumbsOnMobile?>",
-					<?php if($hideThumbsOnMobile == 'off'){ ?>hideNavDelayOnMobile:<?php echo $hideThumbsDelayMobile; ?>,
-					<?php } ?>hideBulletsOnMobile:"<?php echo $hideBulletsOnMobile?>",
-					hideArrowsOnMobile:"<?php echo $hideArrowsOnMobile?>",
-					hideThumbsUnderResolution:<?php echo $hideThumbsUnderResolution?>,
-
-					<?php
-					if($this->slider->getParam("slider_type") == 'fullscreen'){
-					?>
-					fullScreenOffsetContainer: "<?php echo $this->slider->getParam("fullscreen_offset_container","");?>",
-					fullScreenOffset: "<?php echo $this->slider->getParam("fullscreen_offset_size","");?>",
-					<?php
-					}
-					?>
-					hideSliderAtLimit:<?php echo $hideSliderAtLimit?>,
-					hideCaptionAtLimit:<?php echo $hideCaptionAtLimit?>,
-					hideAllCaptionAtLilmit:<?php echo $hideAllCaptionAtLimit?>,
-					startWithSlide:<?php echo $startWithSlide?>
-				});
-
-
-
-				<?php
-				if($this->slider->getParam("custom_javascript", '') !== ''){
-					echo stripslashes($this->slider->getParam("custom_javascript", ''));
 				}
-				?>
+				});	/*ready*/
 
-			});	/*ready*/
-
-		</script>
+			</script>
 
 
 		<?php
