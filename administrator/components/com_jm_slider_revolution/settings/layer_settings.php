@@ -42,9 +42,6 @@ $layerSettings->addSap("Layer Params","layer_params");
 $layerSettings->addTextBox("layer_caption", "caption_green", "Style",array($UniteSettingsRev::PARAM_ADDTEXT=>$captionsAddonHtml,"class"=>"textbox-caption"));
 
 $addHtmlTextarea = '';
-if($sliderTemplate == "true"){
-	$addHtmlTextarea .= $UniteFunctionsRev::getHtmlLink("javascript:void(0)", "Insert Meta","linkInsertTemplate","disabled revblue button-primary");
-}
 $addHtmlTextarea .= $UniteFunctionsRev::getHtmlLink("javascript:void(0)", "Insert Button","linkInsertButton","disabled revblue button-primary");
 
 $layerSettings->addTextArea("layer_text", "","Text / Html",array("class"=>"area-layer-params",$UniteSettingsRev::PARAM_ADDTEXT_BEFORE_ELEMENT=>$addHtmlTextarea));

@@ -60,6 +60,10 @@ $api =  "revapi".$sliderID;
 						<td class="api-cell1"><?php echo "Redraw Slider";?>:</td>
 						<td class="api-cell2"><input type="text" readonly  class="api-input" value="<?php echo $api?>.revredraw();"></td>
 					</tr>
+						<tr>
+							<td class="api-cell1"><?php echo"Kill and Remove Slider";?>:</td>
+							<td class="api-cell2"><input type="text" readonly  class="api-input" value="<?php echo $api?>.revkill();"></td>
+						</tr>
 					
 				</table>
 				<div class="divide20"></div>
@@ -68,50 +72,51 @@ $api =  "revapi".$sliderID;
 				<div class="api-caption"><?php echo "API Events";?>:</div>
 				<div class="divide20"></div>
 				<div class="api-desc"><?php echo "Copy and Paste the Below listed API Functions into your jQuery Functions for Revslider Event Listening";?>.</div>
-				<textarea id="api_area" readonly>
-				
-<?php echo $api?>.bind("revolution.slide.onloaded",function (e) {
-//alert("slider loaded");
-});
-	
-<?php echo $api?>.bind("revolution.slide.onchange",function (e,data) {
-//alert("slide changed to: "+data.slideIndex);
-//data.slideIndex <?php echo 'is the index of the li container in this Slider'; ?>
+				<textarea id="api_area" readonly>			
+					<?php echo $api?>.bind("revolution.slide.onloaded",function (e) {
+						//alert("slider loaded");
+					});
+							
+					<?php echo $api?>.bind("revolution.slide.onchange",function (e,data) {
+						//alert("slide changed to: "+data.slideIndex);
+						//data.slideIndex <?php _e('is the index of the li container in this Slider', REVSLIDER_TEXTDOMAIN); ?>
+						
+						//data.slide <?php _e('is the current slide jQuery object (the li element)', REVSLIDER_TEXTDOMAIN); ?>
+						
+					});
 
-//data.slide <?php echo 'is the current slide jQuery object (the li element)'; ?>
+					<?php echo $api?>.bind("revolution.slide.onpause",function (e,data) {
+						//alert("timer paused");
+					});
 
-});
+					<?php echo $api?>.bind("revolution.slide.onresume",function (e,data) {
+						//alert("timer resume");
+					});
 
-<?php echo $api?>.bind("revolution.slide.onpause",function (e,data) {
-//alert("timer paused");
-});
+					<?php echo $api?>.bind("revolution.slide.onvideoplay",function (e,data) {
+						//alert("video play");
+					});
 
-<?php echo $api?>.bind("revolution.slide.onresume",function (e,data) {
-//alert("timer resume");
-});
+					<?php echo $api?>.bind("revolution.slide.onvideostop",function (e,data) {
+						//alert("video stopped");
+					});
 
-<?php echo $api?>.bind("revolution.slide.onvideoplay",function (e,data) {
-//alert("video play");
-});
+					<?php echo $api?>.bind("revolution.slide.onstop",function (e,data) {
+						//alert("slider stopped");
+					});
 
-<?php echo $api?>.bind("revolution.slide.onvideostop",function (e,data) {
-//alert("video stopped");
-});
+					<?php echo $api?>.bind("revolution.slide.onbeforeswap",function (e) {
+						//alert("before swap");
+					});
 
-<?php echo $api?>.bind("revolution.slide.onstop",function (e,data) {
-//alert("slider stopped");
-});
+					<?php echo $api?>.bind("revolution.slide.onafterswap",function (e) {
+						//alert("after swap");
+					});
 
-<?php echo $api?>.bind("revolution.slide.onbeforeswap",function (e) {
-//alert("before swap");
-});
-
-<?php echo $api?>.bind("revolution.slide.onafterswap",function (e) {
-//alert("after swap");
-});
-		
-		
-		</textarea>
+					<?php echo $api?>.bind("revolution.slide.slideatend",function (e) {
+						//alert("slide at end");
+					});			
+			</textarea>
 	</div>
 </div>
 
