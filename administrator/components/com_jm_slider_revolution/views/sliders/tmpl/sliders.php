@@ -16,7 +16,7 @@ if(!empty($arrSliders))
 	
 $outputTemplates = false;
 $GlobalsRevSlider = new GlobalsRevSlider();
-
+$latest_version = '1.0.0';
 
 ?>
 
