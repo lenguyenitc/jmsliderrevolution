@@ -38,7 +38,7 @@ if(!empty($sliderID)){
 		break;
 	}		
 	//set custom type params values:
-	$settingsMain = $settingsSliderMain::setSettingsCustomValues($settingsMain, $arrFieldsParams, $postTypesWithCats);		
+	$settingsMain = $settingsSliderMain::setSettingsCustomValues($settingsMain, $arrFieldsParams,'');		
 	//set setting values from the slider
 	$settingsMain->setStoredValues($arrFieldsParams);				
 	$settingsParams->setStoredValues($arrFieldsParams);		
