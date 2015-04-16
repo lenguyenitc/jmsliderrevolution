@@ -772,6 +772,7 @@ var UniteAdminRev = new function(){
 		jQuery("#input_video_loop").prop("checked","");
 		jQuery("#input_video_control").prop("checked","");
 		jQuery("#input_video_mute").prop("checked","");
+		jQuery("#input_disable_on_mobile").prop("checked","");
 		jQuery("#input_video_cover").prop("checked","");
 		jQuery("#input_video_dotted_overlay option[value='none']").attr("selected",true);
 		jQuery("#input_video_ratio option[value='16:9']").attr("selected",true);
@@ -889,7 +890,11 @@ var UniteAdminRev = new function(){
 		if(data.mute && data.mute == true)
 			jQuery("#input_video_mute").prop("checked","checked");
 		else
-			jQuery("#input_video_mute").prop("checked","");
+			jQuery("#input_video_mute").prop("checked","");	
+		if(data.disable_on_mobile && data.disable_on_mobile == true)
+			jQuery("#input_disable_on_mobile").prop("checked","checked");
+		else
+			jQuery("#input_disable_on_mobile").prop("checked","");
 			
 		if(data.cover && data.cover == true)
 			jQuery("#input_video_cover").prop("checked","checked");
@@ -940,6 +945,7 @@ var UniteAdminRev = new function(){
 		obj.videoloop = jQuery("#input_video_loop").is(":checked");
 		obj.controls = jQuery("#input_video_control").is(":checked");
 		obj.mute = jQuery("#input_video_mute").is(":checked");
+		obj.disable_on_mobile = jQuery("#disable_on_mobile").is(":checked");
 		obj.cover = jQuery("#input_video_cover").is(":checked");
 		obj.dotted = jQuery("#input_video_dotted_overlay option:selected").val();
 		obj.ratio = jQuery("#input_video_ratio option:selected").val();

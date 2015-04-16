@@ -222,6 +222,10 @@ defined('_JEXEC') or die;
 					<?php echo "Mute:";?>
 				</label>				
 				<input type="checkbox" class="checkbox_video_dialog float_left mtop_13" id="input_video_mute" ></input>
+				<label for="input_disable_on_mobile" class="float_left mleft_20 mtop_10">
+					<?php echo "Disable Mobile:";?>
+				</label>				
+				<input type="checkbox" class="checkbox_video_dialog float_left mtop_13" id="input_disable_on_mobile" ></input>
 			<div class="clear"></div>
 			</div>
 
