@@ -679,7 +679,7 @@ class RevOperations extends UniteElementsBaseRev{
 	 *
 	 * get contents of the static css file
 	 */
-	public static function getStaticCss(){
+	public static function getStaticCss($contentCSS = null){
 		return($contentCSS);
 	}
 
