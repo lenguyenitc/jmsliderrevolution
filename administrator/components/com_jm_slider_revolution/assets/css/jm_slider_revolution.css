@@ -33,6 +33,12 @@ body a,body a:hover{
 body table {
     width: 100%;
 }
+#toolbox_wrapper table{
+	width: auto;
+}
+#toolbox_wrapper table input[type="radio"]{
+	margin-right: 5px;
+}
 body #align_table {
     width: auto;
 }
