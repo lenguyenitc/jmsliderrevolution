@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="2.5" method="upgrade">
     <name>com_jm_slider_revolution</name>
-    <creationDate>2014-11-01</creationDate>
+    <creationDate>2015-04-24</creationDate>
     <copyright>Copyright (C) 2014. All rights reserved.</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <author>JoomlaMan</author>
