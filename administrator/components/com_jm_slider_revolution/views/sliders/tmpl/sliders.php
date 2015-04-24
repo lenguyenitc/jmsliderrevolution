@@ -16,7 +16,8 @@ if(!empty($arrSliders))
 	
 $outputTemplates = false;
 $GlobalsRevSlider = new GlobalsRevSlider();
-$latest_version = '1.0.0';
+$install_vertion = '1.0.4.6.5';
+$latest_version = '1.0.4.6.5';
 
 ?>
 
@@ -61,7 +62,7 @@ $latest_version = '1.0.0';
 		<div style="border-top:1px solid #e5e5e5; padding:15px 15px 15px 80px; position:relative;overflow:hidden;background:#fff;">		
 			<div class="revgray" style="left:0px;top:0px;position:absolute;height:100%;padding:27px 10px;"><i style="color:#fff;font-size:25px" class="revicon-info-circled"></i></div>
 			<p style="margin-top:5px; margin-bottom:5px;">
-				<?php echo "Installed Version";?>: <span  class="slidercurrentversion"><?php echo GlobalsRevSlider::SLIDER_REVISION; ?></span><br>
+				<?php echo "Installed Version";?>: <span  class="slidercurrentversion"><?php echo $install_vertion; ?></span><br>
 				<?php echo "Latest Available Version";?>: <span class="slideravailableversion"><?php echo $latest_version; ?></span>
 				<a class='button-primary revblue' href='#' id="rev_check_version"><?php echo "Check Version";?> </a>
 			</p>

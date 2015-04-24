@@ -14,7 +14,6 @@ define("REVSLIDER_TEXTDOMAIN","revslider");
 class GlobalsRevSlider{
 
 	const SHOW_DEBUG = false;
-	const SLIDER_REVISION = '1.0.0';
 	const TABLE_SLIDERS_NAME = "revslider_sliders";
 	const TABLE_SLIDES_NAME = "revslider_slides";
 	const TABLE_STATIC_SLIDES_NAME = "revslider_static_slides";
