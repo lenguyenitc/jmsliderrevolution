@@ -7,7 +7,7 @@
     <author>JoomlaMan</author>
     <authorEmail>support@joomlaman.com</authorEmail>
     <authorUrl>http://JoomlaMan.com</authorUrl>
-    <version>1.0.0</version>
+    <version>1.0.4.6.5</version>
     <description>Jm Slider Revolution Joomla CMS</description>
 	<scriptfile>script.jm_slider_revolution.php</scriptfile>
     <install> <!-- Runs on install -->
